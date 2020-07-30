@@ -1,0 +1,1 @@
+/usr/bin/c++  --std=c++11   -rdynamic CMakeFiles/example6.dir/example/example6.cpp.o  -o example6 libglui_static.a -lglut -lGL -lGLU 

@@ -1,0 +1,124 @@
+#pragma once
+
+
+//	Display:		Very simple class to hold the visualization params (thus, not part of the skeletonization/FT engine per se)
+//
+//
+
+#include "include/grouping.h"
+#include "include/pointcloud.h"
+#include <stdlib.h>
+#include "include/glutwrapper.h" 
+
+
+
+class ScalarImage;
+class PointCloud;
+class GLUI;
+
+
+class	Display
+{
+public:
+
+
+		    Display(int glutWin,int winSize,PointCloud* cloud,int argc,char** argv);
+	       ~Display();	
+			
+PointCloud*  cloud;											//The cloud we currently visualize
+ScalarImage* image;
+
+int			imgSize;										//Effective size (pow 2) of texture images to be displayed
+GLuint		tex_sites,tex_dt,tex_color,tex_mask;			//Various textures used by this
+GLuint		tex_splat,tex_label_cushions;
+GLuint		tex_point_density;
+GLuint		tex_mixing;
+GLuint		tex_framebuffer_lum;
+GLuint		tex_framebuffer_rgba;
+GLuint		tex_aggregate;
+GLuint		tex_false_negatives;
+GLuint		tex_density;
+GLuint		framebuffer_lum;
+GLuint		framebuffer_rgba;
+
+
+
+
+        GLuint  tex_dimranking;
+        std::vector<DimensionHistogram> bundlingHistogram;
+  
+//private:
+
+
+
+
+
+PointCloud* loadPointCloud(char filename[256]);
+
+
+void  computeDimensionRankMap();
+ 
+void  computeDimensionRankHeatMap();
+void  computeDimensionRankSetMap();
+
+void		computeGroupMeshes(Grouping*);
+bool		computeCushions(Grouping::PointGroup*,float* height);
+void		computeAllCushions();
+void		computeLabelMixing();
+void		computeFalseNegativesGraph();
+void		computeBundles();
+void		computePointColors(int colormap);
+void		computeDistribution();
+void		generateTexture();
+void		drawMap();
+void		drawGroups();
+void		drawPoints();
+void		drawDelaunay();
+void		drawGroupMeshes();
+void		drawBundles();
+void		drawBrush();
+void		drawSelection();
+void		makeSplat(int SZ,float sigma);					
+void		makeDensitySplat(int SZ);
+void		computeTriangleMap();
+void		startOffscreen(int ncomponents);
+void		endOffscreen();
+
+void		displayCb();
+void		mouseCb(int,int,int,int);
+void		motionCb(int,int);
+void		keyboardCb(unsigned char,int,int);
+void		passivemotionCb(int,int);
+void		controlCb(int);
+
+static void mouse_cb(int button, int state, int x, int y);
+static void motion_cb(int x, int y);
+static void passivemotion_cb(int x, int y);
+static void display_cb();
+static void control_cb(int);
+static void keyboard_cb(unsigned char k,int,int);
+
+int			winSize; 
+float		scale, transX, transY;					//Viewing settings
+bool		isLeftMouseActive,isRightMouseActive; 
+int			oldMouseX,oldMouseY;
+int			tex_interp;								//Use linear texture interpolation (1) or nearest-neighbor (0)	
+GLUI*		glui;									//GLUI user-interface used by this
+Point2d		brush_point;							//position of mouse cursor
+int			closest_point;							//closest cloud point to brush_point	
+int			selected_point_id;						//selected point by click
+int			glutWin;								//GLUT window id for this
+float*		splat_img;
+float*		cushion_param;							//Work array: Parameterization of boundaries of cushions (used for CUDA DT/FT)
+float*		cushion_dt;								//Work array: DT of cushions boundaries (from CUDA)
+
+
+static Display*	
+			instance;
+};
+
+
+
+
+
+

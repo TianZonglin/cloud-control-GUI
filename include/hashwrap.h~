@@ -1,0 +1,15 @@
+#pragma once
+
+//Simple wrapper for hash_map
+
+
+#include <tr1/unordered_set>
+#define hash_set std::tr1::unordered_set
+#define hash_multiset std::tr1::unordered_multiset
+
+#include <tr1/unordered_map>
+#define hash_map std::tr1::unordered_map
+#define hash_multimap std::tr1::unordered_multimap
+
+
+

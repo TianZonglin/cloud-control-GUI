@@ -1,3 +1,13 @@
+
+*.data
+*.2d
+*.err
+
+*.bat
+!segmentation.data
+!segmentation.lamp.2d
+!segmentation.lamp.err
+
 # Prerequisites
 *.d
 
