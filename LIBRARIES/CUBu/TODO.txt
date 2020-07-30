@@ -1,9 +1,0 @@
-
-
-** Control bundling strength somehow by the local density (to make hi-density bundles appear thicker)
-
-
-** Drawing directly from CUDA (so we eliminate the gpu->cpu alpha..graph copies)
-
-
-
