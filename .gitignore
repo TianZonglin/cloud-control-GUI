@@ -1,5 +1,6 @@
-
+.gitignore
 *.data
+push.sh
 *.2d
 *.err
 
