@@ -1,0 +1,59 @@
+1. Efficient implem:
+======================
+
+-KDE
+   -this makes iterative density estimation e.g. using Deriche's method, which makes convolution indep. of kernel size (http://citeseer.ist.psu.edu/deriche93recursively.html) more complicated
+ 
+
+
+2. Bundling styles
+========================
+
+2.1 Endpoint clustering
+   
+-MS visualization:   
+   -EXTRA: we could render edges with two styles:
+       -1st segment: from edge actual endpoints until the MS anchor points; these are 'detail' terminations
+	   -2nd segment: between MS anchor points; these are the 'core' bundles
+
+2.2. edge style: polygons
+
+2.3 directional bundling
+	Tune repulsion strength to limit separation (so bundles don't wiggle too much).
+	Tangent dir at each sample point stored as additional edge parameter (angle 0..360). Value gets interpolated angularly during resampling.
+
+
+
+3. Aesthetic improvements
+===========================
+
+3.1 level of detail: 
+  -illumination,shading: non-trivial to do directly from grad(density), since density is close to Dirac. Local max normalization is the solution. This also
+   creates great effects like crossing bundles: the top-crossing bundle shows like a 'bump' atop of the underlying bundle. Explanation: see density map.
+
+3.2. directional coloring
+
+
+4. Examples
+=============
+
+-classical graphs (opte, net, migrations, airlines, etc): comparison with older methods; speed;
+-airlines (FR): separation of direction, shading
+-eyetrack: separation of directions vs older non-separated thing
+-streaming EB: snapshot from new app showing nice textures running along parallel paths
+-surveillance: immediately see structure of parallel flows
+
+=====================================================
+
+Coloring:
+
+-hue:		shading / length
+-alpha:		...
+
+Modulate above with:
+-luminance:	* cushion profile (cushion for shortest edges, flat for longest edges)
+-alpha:     * cushion profile (flat for shortest edges, cushion for longest edges)
+Effect:
+    -shortest edges: constant transparency but varying luminance (see them better via lumi gradient)
+	-longest edges:  constant luminance but varying alpha (make their end-fragments more transparent so we see node agglomerations better)
+Overall, long edges make 'room' so tht short edges become more visible
