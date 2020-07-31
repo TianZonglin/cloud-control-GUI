@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=RUNGIT
-Exec=/home/tzloop/Desktop/SUCCESS/push.sh
-Icon=/home/tzloop/Downloads/qq.png
-Type=Application
-StartupNotify=true
-
-Name[zh_CN]=RUNGIT
