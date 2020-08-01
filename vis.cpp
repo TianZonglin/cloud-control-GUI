@@ -379,7 +379,7 @@ Display::Display(int glutWin_,
 				 closest_point(-1),
 				 selected_point_id(-1)
 {
-printf("1");
+    printf("\n----Display::Display(...)\n");
 	glutInitWindowSize(winSize_, winSize_);								//Graphics system initialization: This must occur in a very specific order!
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_ALPHA);
 	glutInit(&argc, argv);	
@@ -397,8 +397,7 @@ printf("1");
     point_influence_radius = point_influence_radius * canvasSize / 1024.0f;
     shepard_averaging = shepard_averaging * canvasSize / 1024.0f;
 
-
-printf("2");
+ 
 	cudaMallocHost((void**)&cushion_param,winSize*winSize*sizeof(float));
 	cudaMallocHost((void**)&cushion_dt,winSize*winSize*sizeof(float));
 	splat_img = new float[winSize*winSize];
@@ -410,7 +409,7 @@ printf("2");
 	pcloud_distribution = new SimplePointCloud(cloud->size());
 	current_view = pcloud_projection;
 	next_view    = pcloud_distribution;
-printf("3");
+ 
     glutWin = glutWin_;
     glutDisplayFunc(display_cb);
 	//glutMouseFunc(mouse_cb);
@@ -493,7 +492,7 @@ printf("3");
 
 	//////////computeBundles();
 	/////generateTexture();
-    cout << "then..." << endl; 
+    cout << "\n. then..." << endl; 
 /*
 glEnable(GL_TEXTURE_2D);
 	typedef unsigned char BYTE;
@@ -531,7 +530,7 @@ glEnable(GL_TEXTURE_2D);
 	////////computeLabelMixing();
 	//computePointColors(show_particles);
 	//computeDistribution();
-printf("4");
+ 
 	computeDimensionRankMap();
 	//computeDimensionRankSetMap();
 
@@ -893,7 +892,7 @@ void Display::computeGroupMeshes(Grouping* g)
 
 void Display::drawMap()											//Display one of the various dense maps:
 {
-	printf("\n========%d========\n",show_maptype);
+	printf("\nGrouping* PointCloud::groupByLabel()\n",show_maptype);
 	switch (6)  
 	//error here type=7 that I cancelled. becasue it's a global parameter so I changed it in
 	//error several places, that might have a position I didn't change back！！！ and there is no 

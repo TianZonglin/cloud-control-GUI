@@ -25,7 +25,7 @@ bool Colormap::isColorMode() {
 
 
 void Colormap::load(int mapCode) {
-    printf("void Colormap::load(int mapCode)");
+    printf("\n--==void Colormap::load(int mapCode)\n");
     if ((loaded_map_code == mapCode) && (inverted == invert_colormap))
         return;
     
@@ -45,9 +45,9 @@ void Colormap::load(int mapCode) {
 }
 
 void Colormap::load(std::string filename) {
-    
+    printf("\n----====void Colormap::load(std::string filename)\n");
     ifstream cmapfile(filename.c_str());
-    printf("\n$$$ selected map is %s\n",filename.c_str());
+    printf("\n        load, selected map is %s\n",filename.c_str());
     string line;
     int i = 0;
     int numColors;
@@ -92,7 +92,7 @@ void Colormap::load(std::string filename) {
     //for(int x=0;x<colorTable.size();x++){
      //   printf("(%f,%f,%f)\n",colorTable.at(x).r,colorTable.at(x).g,colorTable.at(x).b);
     //}  正常
-    printf("--------------------------\n");
+ 
 }    
 
 

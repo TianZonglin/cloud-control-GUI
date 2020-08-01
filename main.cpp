@@ -47,22 +47,22 @@ bool  compute_rankings_offline = false;
 
 int main(int argc,char **argv)
 {
-
+	printf("\n-int main(int argc,char **argv)\n");
     //1. Load parameters from command line
     loadParameters(argc, argv);
-	printf("\n$$$ after loadParameters. pointfile = %s\n",pointfile);
+	printf("\n-main, after loadParameters. pointfile = %s\n",pointfile);
 
 
     //Let CUDA communicate with OpenGL
 
     colorMap.load(current_cmap);
- 	printf("\n$$$ test colorMap.load, get(1) = (%f,%f,%f)\n",colorMap.getColor(1).r,colorMap.getColor(1).g,colorMap.getColor(1).b);
+ 	printf("\n-main, test colorMap.load, get(1) = (%f,%f,%f)\n",colorMap.getColor(1).r,colorMap.getColor(1).g,colorMap.getColor(1).b);
 
 
 
     //Initialize CUDA DT/FT API
     skelft2DInitialization(fboSize);									
-	printf("\n$$$ not concerned about skelft2DInitialization()\n");
+	printf("\n-main, not concerned about skelft2DInitialization()\n");
 
 
 
@@ -76,7 +76,7 @@ int main(int argc,char **argv)
     //3. Point cloud
     PointCloud*	fullCloud = loadPointCloud();
 
-	printf("\n$$$ after load, X[%f,%f], Y[%f,%f]\n",fullCloud->min_p.x,fullCloud->min_p.y,fullCloud->max_p.x,fullCloud->max_p.y);
+	printf("\n-main, after load, X[%f,%f], Y[%f,%f]\n",fullCloud->min_p.x,fullCloud->min_p.y,fullCloud->max_p.x,fullCloud->max_p.y);
     
 
 
@@ -86,7 +86,7 @@ int main(int argc,char **argv)
     ////} 
     ////else
       fullCloud->myFitToSize();
-	  printf("\n$$$ after fitsize, X[%f,%f], Y[%f,%f]\n",fullCloud->min_p.x,fullCloud->min_p.y,fullCloud->max_p.x,fullCloud->max_p.y);
+	  printf("\n-main, after fitsize, X[%f,%f], Y[%f,%f]\n",fullCloud->min_p.x,fullCloud->min_p.y,fullCloud->max_p.x,fullCloud->max_p.y);
     
           
     //Finalize point cloud creation, once all points are added
@@ -116,7 +116,7 @@ int main(int argc,char **argv)
 //    subCloud1->initEnd();
 //    		
     
-    printf("\n$$$ initEnd finished\n");
+    printf("\n-main, initEnd finished\n");
     //Initialize visualization engine
     Display* dpy = new Display(1,fboSize, fullCloud, argc, argv);
     dpy->selected_point_id = selected_point_id;
@@ -135,7 +135,7 @@ int main(int argc,char **argv)
 
 
 PointCloud* loadPointCloud() {
-
+	printf("\n----PointCloud* loadPointCloud() \n");
     PointCloud *cloud = new PointCloud(fboSize);					
 
 	//////////////appear errors alloc
@@ -143,7 +143,7 @@ PointCloud* loadPointCloud() {
     //Read data from file:
     if (pointfile)
     {
-        cout << "\nReading PEx file (loadPointCloud)..." << endl;
+        cout << "\n    loadPointCloud, Reading PEx file (loadPointCloud)..." << endl;
         bool ok = false;
         if (load_trails) { ////////////默认false
             char newPointFileName[100];
@@ -154,10 +154,10 @@ PointCloud* loadPointCloud() {
             ok = cloud->myLoadPex(pointfile, projname, load_nd);
         if (!ok)
         {
-            cout<<"Cannot read given pointcloud data, aborting"<<endl;
+            cout<<"\n    Error: Cannot read given pointcloud data, aborting"<<endl;
             exit(1);
         }
-        cout << "Finished reading PEx file." << endl;
+        cout << "\n    loadPointCloud, Finished reading PEx file." << endl;
     }
     //Generate synthetic data:
     else
@@ -174,7 +174,7 @@ PointCloud* loadPointCloud() {
 }
 
 void loadParameters(int argc, char **argv) {
-
+	printf("\n----void loadParameters(int argc, char **argv)\n");
     for (int ar=1;ar<argc;++ar)
     {
         string opt = argv[ar];

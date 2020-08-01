@@ -125,6 +125,7 @@ PointCloud::~PointCloud()
 
 void PointCloud::makeKDT()
 {
+    printf("--------void PointCloud::makeKDT()");
 	delete kdt;														//Deallocate whatever we hold currently
 	if (kdt_points) annDeallocPts(kdt_points);
 
@@ -199,6 +200,8 @@ int PointCloud::searchNN(const Point2d& seed,int k,vector<int>& result,vector<fl
 
 void PointCloud::triangulate()
 {
+
+   printf("\n--------void PointCloud::triangulate()\n");
    triangulateio ti,to;
    double pts[50000];													//In: 2D points to be triangulated
    int tris[50000];														//Out: triangles created by the 2D triangulation
@@ -223,7 +226,7 @@ void PointCloud::triangulate()
 
    ::triangulate((char*)"zePBNQYY",&ti,&to,0);				//Call Triangle-lib to do the triangulation of the projected skel-points
 	////generated into param 'to'
-	printf("\n$$$ Call Triangle-lib, edges = %d, tris = %d\n",to.numberofedges,to.numberoftriangles);
+	printf("\n        Call Triangle-lib, edges = %d, tris = %d\n",to.numberofedges,to.numberoftriangles);
 
    triangles.resize(to.numberoftriangles);								//Get triangles:
    point2tris.resize(points.size());									//In the same time, construct point2tris[]
@@ -249,7 +252,7 @@ void PointCloud::triangulate()
 	  (*edges)(i1,i2) = 1;
 	  (*edges)(i2,i1) = 1;
    }
-   printf("\nSparseMatrix generated\n",(*edges));
+   printf("\n        SparseMatrix generated\n");
 }
 
 
@@ -293,6 +296,7 @@ void PointCloud::sortErrors()										//For each matrix row (point in cloud), s
 }*/
 void PointCloud::sortErrors()
 {   
+    printf("--------void PointCloud::makeKDT()");
     if (distmatrix == NULL) {
         sorted_errors = 0;
         return;
@@ -334,8 +338,10 @@ double variance(const vector<double>& v) {
     return accum / (v.size()-1); 
 }
 
-void PointCloud::initEnd()
-{
+void PointCloud::initEnd(){
+
+    printf("\n----void PointCloud::initEnd()\n");
+
     int NP = points.size();
 
     memset(siteParam,0,fboSize*fboSize*sizeof(float));				
@@ -374,10 +380,10 @@ void PointCloud::initEnd()
         float dt = siteDT[i];
         if (dt>DT_max) DT_max = dt;
     }
-	printf("\n$$$ siteDT generated.\n");
+	printf("\n    initEnd, siteDT generated.\n");
 
     //Compute Delaunay triangulation of this
-    cout << "\nTriangulating cloud..." << endl;
+    cout << "\n    initEnd, Triangulating cloud..." << endl;
     triangulate();
 
     //Used to compare edges vs their angles
@@ -414,7 +420,7 @@ void PointCloud::initEnd()
     
     makeKDT();
 	 
-	cout << "\nMaking pointcloud KDT finished" << endl;
+	cout << "\n    Making pointcloud KDT finished" << endl;
 
 	////////kdt->Print(true,std::cout);
  
@@ -476,6 +482,7 @@ void PointCloud::computeDiameter() {
 
 Grouping* PointCloud::groupByLabel()								//Construct grouping of points in this based on equal-label
 {
+    printf("Grouping* PointCloud::groupByLabel()");
 	SimpleGrouping* grp = new SimpleGrouping(this);					//Make new grouping based on point-labeling of this
 	map<int,int> gkey2gidx;											//Maps the group-ids to 0-based ids
 
@@ -990,7 +997,7 @@ void PointCloud::computeFalseNegatives(int pid,bool norm)						//Compute false-n
 
 
 void PointCloud::myFitToSize(float minX, float minY, float maxX, float maxY) {
-
+    printf("\n        void PointCloud::myFitToSize(float minX, float minY, float maxX, float maxY)\n");
     //Size of the space between points and the window's border (needed for safe DT computations)
     //const float t = 0.04;
     const float t = 0.08;    
@@ -1063,6 +1070,7 @@ vector<string> explode(const string & str, char delim)
 
 bool PointCloud::myLoadPex(const char* file, const char* proj, bool load_nd)
 {
+    printf("\n--------bool PointCloud::myLoadPex(const char* file, const char* proj, bool load_nd)\n");
     //Size of the space between points and the window's border (needed for safe DT computations)
     //const float t = 0.04;
     const float t = 0.08;
@@ -1081,11 +1089,11 @@ bool PointCloud::myLoadPex(const char* file, const char* proj, bool load_nd)
     char line[5000];
 	
     //1. Read 2D projections:
-    cout << "Reading 2D points file: " + f2d << endl;
+    cout << "\n        myLoadPex, Reading 2D points file: " + f2d << endl;
     FILE* fp = fopen(f2d.c_str(),"r");
     if (!fp)
     {
-        cout<<"Error: Cannot open "<<f2d<<endl;
+        cout<<"        Error: Cannot open "<<f2d<<endl;
         return false;
     }	
 	
@@ -1103,7 +1111,7 @@ bool PointCloud::myLoadPex(const char* file, const char* proj, bool load_nd)
     dim = atoi(trim(line).c_str());
     if (dim!=2)
     {
-        cout<<"Warning: 2D projection dimension="<<dim<<", expected 2"<<endl;
+        cout<<"        Warning: 2D projection dimension="<<dim<<", expected 2"<<endl;
     }
 
     //Get the attributes names
@@ -1157,15 +1165,15 @@ bool PointCloud::myLoadPex(const char* file, const char* proj, bool load_nd)
     }
 	
     //2. Read projection-error matrix:
-    cout << "Reading projection-errors file: " + f2d << endl;
+    cout << "\n        myLoadPex, Reading projection-errors file: " + f2d << endl;
     if (!fileExists(fer)) {
-        cout << "Warning: Errors file " << fer << " doesn't exist" << endl;
+        cout << "        Warning: Errors file " << fer << " doesn't exist" << endl;
         distmatrix = NULL;                                     //Create a distance matrix and fill it with dummy data      
     } else {
         fp = fopen(fer.c_str(),"r");									
         if (!fp)
         {
-            cout<<"Error: Cannot open"<<fer<<endl;
+            cout<<"        Error: Cannot open"<<fer<<endl;
             return false;
         }		
 
@@ -1175,7 +1183,7 @@ bool PointCloud::myLoadPex(const char* file, const char* proj, bool load_nd)
         fscanf(fp,"%d",&nrows);
         if (nrows!=NP)
         {
-            cout<<"Error: error-matrix #rows "<<nrows<<" != #points "<<NP<<endl;
+            cout<<"        Error: error-matrix #rows "<<nrows<<" != #points "<<NP<<endl;
             return false;
         }
 
@@ -1203,13 +1211,13 @@ bool PointCloud::myLoadPex(const char* file, const char* proj, bool load_nd)
         distmatrix->minmax();
         //   -the range [min,0]: false positives (points too close in 2D w.r.t. nD)
         //   -the range [0,max]: false negatives (points too far in 2D w.r.t. nD)
-        cout<<"Error matrix: ["<<distmatrix->min()<<","<<distmatrix->max()<<"]"<<endl;
+        cout<<"        Error matrix: ["<<distmatrix->min()<<","<<distmatrix->max()<<"]"<<endl;
     }
     
     //3 Read the nD data values:
     if (true)
     {
-        cout << "Reading nD points file: " + fnd << endl;
+        cout << "\n        myLoadPex, Reading nD points file: " + fnd << endl;
         fp = fopen(fnd.c_str(),"r");
         //Skip first line 'DY'
         fgets(line,1024,fp);
@@ -1221,7 +1229,7 @@ bool PointCloud::myLoadPex(const char* file, const char* proj, bool load_nd)
 
         if (NP_n!=NP)
         {
-           cout<<"Error: "<<NP_n<<" nD points, "<<NP<<" 2D points"<<endl;
+           cout<<"        Error: "<<NP_n<<" nD points, "<<NP<<" 2D points"<<endl;
            return false;
         }
        
@@ -1287,7 +1295,7 @@ bool PointCloud::myLoadPex(const char* file, const char* proj, bool load_nd)
             fscanf(fp,"%f",&label);
             if (label!=point_scalars[i])
             {
-                cout<<"Error: point "<<i<<"("<<pid_nd<<") has label "<<label<<" in nD and label "<<point_scalars[i]<<" in 2D"<<endl;
+                cout<<"            Error: point "<<i<<"("<<pid_nd<<") has label "<<label<<" in nD and label "<<point_scalars[i]<<" in 2D"<<endl;
                 return false;
             }
         }
@@ -1298,9 +1306,9 @@ bool PointCloud::myLoadPex(const char* file, const char* proj, bool load_nd)
             attributes_original_mean[j] = attributes_original_mean[j] / ND;
         }
         for (int j = 0; j < 5; j++) {
-            printf("\nattributes_min=%f\n",attributes_min[j]);
+            printf("\n        attributes_min=%f\n",attributes_min[j]);
         }
-        cout << "Computing squared distance matrix... " << flush;
+        cout << "\n        myLoadPex, Computing squared distance matrix... " << flush;
         //Compute the squared distance matrix in nd
         sqrDistanceMatrix = new DistMatrix(NP);        
         for (int i = 0; i < NP; i++) {                 
@@ -1323,7 +1331,7 @@ bool PointCloud::myLoadPex(const char* file, const char* proj, bool load_nd)
                 (*sqrDistanceMatrix)[j][i] = dij;                
             }
         }
-        cout << "done!" << endl;
+        cout << "\n        done!" << endl;
     }
 	
     return true;
@@ -1467,7 +1475,7 @@ void PointCloud::dimensionRank(float radius) {
     return;
 }
 void PointCloud::dimensionRankCentroid() {
-    printf("void PointCloud::dimensionRankCentroid()");
+    printf("--------void PointCloud::dimensionRankCentroid()");
   
     int ND = attributes.size();
     centroidRanks.clear();
@@ -1533,7 +1541,7 @@ void PointCloud::dimensionRankCentroid() {
 
     //Sorting in ascending order, so the first is the most important dimension to describe similarity
     //std::sort(centroidRanks.begin(), centroidRanks.end(), DimensionRank::SortByWeightAsc());    
-    cout << "Centroid ranking complete" << endl;
+    cout << "\n        Centroid ranking complete" << endl;
 }
 
 

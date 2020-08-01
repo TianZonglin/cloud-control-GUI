@@ -9,9 +9,9 @@ using namespace std;
 
 FullMatrix::FullMatrix(int nrows_and_cols):m_min(0),m_max(0)
 {
-	m.resize(nrows_and_cols);
-	for(int i=0;i<nrows_and_cols;++i)
-	   m[i] = new Row(nrows_and_cols);
+    m.resize(nrows_and_cols);
+    for(int i=0;i<nrows_and_cols;++i)
+        m[i] = new Row(nrows_and_cols);
 }
 
 FullMatrix::~FullMatrix()
