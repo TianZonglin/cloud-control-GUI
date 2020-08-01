@@ -165,12 +165,12 @@ void myReduceAttributes(int toDimensionaloty);
 void myReduceAttributes(std::vector<int> selectedDimsIds);   
 void dimensionRankCentroid();
 DimRankingList centroidRanks;
-DimRankingList dimensionRankContribution(int pid, std::vector<int> &neighbors, int strategy);
+DimRankingList dimRankContributionAvg(int pid, std::vector<int> &neighbors, int strategy);
         
 
 
         //Compute the most important dimension to a point pid, given its neighborhood
-        DimRankingList dimensionRank(int pid, float radius);
+        DimRankingList dimensionRankAvg(int pid, float radius);
         //Computer dimension importance of all projected points, given a radius t
         void filterRankings(bool topdims_only);
         void dimensionRank(float radius);

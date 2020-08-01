@@ -25,9 +25,13 @@ bool Colormap::isColorMode() {
 
 
 void Colormap::load(int mapCode) {
-    printf("\n--==void Colormap::load(int mapCode)\n");
-    if ((loaded_map_code == mapCode) && (inverted == invert_colormap))
+    cout<<"\n"<<"--------------------------------"<<__PRETTY_FUNCTION__<<endl;
+    
+    if ((loaded_map_code == mapCode) && (inverted == invert_colormap)){
+        cout<<"\n"<<"--------------------------------return"<<endl;
         return;
+    }
+        
     
     colorTable.clear();
     std::string filename = "colormaps/";
@@ -45,9 +49,9 @@ void Colormap::load(int mapCode) {
 }
 
 void Colormap::load(std::string filename) {
-    printf("\n----====void Colormap::load(std::string filename)\n");
+    cout<<"\n"<<"--------------------------------"<<__PRETTY_FUNCTION__<<endl;
     ifstream cmapfile(filename.c_str());
-    printf("\n        load, selected map is %s\n",filename.c_str());
+    printf("\n--------------------------------load,selected map is %s\n",filename.c_str());
     string line;
     int i = 0;
     int numColors;
@@ -71,7 +75,7 @@ void Colormap::load(std::string filename) {
              
                 Color currentColor(r, g, b); ////颜色结构体
                 //printf("\n$$$ currentColor = (%f,%f,%f)\n",currentColor.r,currentColor.g,currentColor.b);
-                printf("%d",invert_colormap);
+                //printf("%d",invert_colormap);
                 if (invert_colormap) {
                     //printf("<");
                     colorTable.insert(colorTable.begin(), currentColor);
@@ -97,7 +101,7 @@ void Colormap::load(std::string filename) {
 
 
 void rgb2hsv(float r, float g, float b, float& h, float& s, float& v) {
-
+    //pout("------------------------");
     float min = std::min(b,std::min(r,g));
     float max = std::max(b,std::max(r, g));   
     float delta = max - min;
@@ -142,6 +146,7 @@ void rgb2hsv(float r, float g, float b, float& h, float& s, float& v) {
  */
 void hsv2rgb(float h, float s, float v, float& r, float &g, float& b)
 {
+    //pout("------------------------");
     double      hh, p, q, t, ff;
     long        i;
 

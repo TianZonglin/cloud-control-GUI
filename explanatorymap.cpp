@@ -21,7 +21,7 @@ ExplanatoryMap::~ExplanatoryMap() {
 
 void ExplanatoryMap::buildTopRankedNew() {
 
-
+cout<<"\n"<<"----------------"<<__PRETTY_FUNCTION__<<endl;
 
 
     int currentCmapBak = current_cmap;
@@ -53,11 +53,11 @@ void ExplanatoryMap::buildTopRankedNew() {
         int dimId = cloud->point_dimrank_visual[i].dimId;
         vector<int>::iterator it = std::find(topDims.begin(), topDims.end(), dimId);
         if (it == topDims.end()){
-            printf(".");//全在这里输出,说明topDims是空的
+            //(".");//全在这里输出,说明topDims是空的
             dimColorIndex[i] = colorMap.getSize()-1;    
         }   
         else{
-            printf("O");//
+            //printf("O");//
             dimColorIndex[i] =  std::min(int(it - topDims.begin()), numColors);
         }
             
@@ -105,7 +105,7 @@ void ExplanatoryMap::buildTopRankedNew() {
 
 float* ExplanatoryMap::buildWithoutShepard(Scalar &dimensions, Scalar &contributions) {
     
-    
+    cout<<"\n--------------------"<<__PRETTY_FUNCTION__<<endl;
     image = new float[canvasSize*canvasSize*4];
     vector<float> scalarValues = dimensions.getValues();
     //rad_max: Image is empty further away from the points than the cloud's average-dist..
@@ -115,6 +115,8 @@ float* ExplanatoryMap::buildWithoutShepard(Scalar &dimensions, Scalar &contribut
     int closestPointId;
     vector<float> pointsContribution = contributions.getValues();
     
+    cout<<"\n------------------------Loop searchNN()"<<endl;
+    cout<<"\n------------------------Loop rgb2hsv & hsv2rgb"<<endl;
     for(int i=0,offs=0;i<mapSize;++i) {
         for(int j=0;j<mapSize;++j,++offs) {
             //The current pixel to shade

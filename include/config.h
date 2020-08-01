@@ -23,6 +23,7 @@ extern float pointcloud_miny;
 extern float pointcloud_maxx;
 extern float pointcloud_maxy;
 
+ 
 
 enum MapType {MAP_FALSE_POSITIVES,
               MAP_FALSE_NEGATIVES,

@@ -154,6 +154,8 @@ SimplePointCloud *current_view,*next_view;
 
 void draw_image(Display& dpy,int tex_id)
 {
+	cout<<"\n"<<"------------------------"<<__PRETTY_FUNCTION__<<endl;
+
 	float t = 1-interpolation_level;
 
 	setTexture(tex_id,dpy.tex_interp);
@@ -168,11 +170,13 @@ void draw_image(Display& dpy,int tex_id)
 	glEnd();
 	glDisable(GL_BLEND);
 	glDisable(GL_TEXTURE_2D);
+
+	cout<<endl<<"----------------------------Finished"<<endl<<endl;
 }
 
 
 void Display::computeDimensionRankMap() {
-    
+    cout<<"\n"<<"------------"<<__PRETTY_FUNCTION__<<endl;
 //    ExplanatoryMap *expMap = new ExplanatoryMap();
 //    expMap->cloud = this->cloud;
 //    expMap->buildTopRanked();
@@ -233,7 +237,7 @@ void draw_dimension_ranking(Display& dpy) {
 
  
 
-
+    cout<<"\n"<<"--------------------"<<__PRETTY_FUNCTION__<<endl;
 
     draw_image(dpy,dpy.tex_dimranking);
  
@@ -379,12 +383,15 @@ Display::Display(int glutWin_,
 				 closest_point(-1),
 				 selected_point_id(-1)
 {
-    printf("\n----Display::Display(...)\n");
+    cout<<"\n"<<"--------"<<__PRETTY_FUNCTION__<<endl;
 	glutInitWindowSize(winSize_, winSize_);								//Graphics system initialization: This must occur in a very specific order!
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_ALPHA);
 	glutInit(&argc, argv);	
+
+	string _a = pointfile;
+	string _b = _a.replace(0,5,"")+" - "+projname;
 	//  1. first initialize GLUT
-  	glutWin_ = glutCreateWindow("Graph bundling");	  
+  	glutWin_ = glutCreateWindow(const_cast<char *>(_b.c_str()));	  
   	//  2. then create one main window, which initializes OpenGL
 	glewInit();                                         
 	//  3. then initialize GLEW
@@ -461,9 +468,10 @@ Display::Display(int glutWin_,
     labelg = cloud->groupByLabel();  
 
     cloud->dimensionRankCentroid();
-    cout << "Computing dimension rankings..." << endl;    
+
+ 
     cloud->dimensionRank(dimrank_radius);
-	cout << "then..." << endl;    
+	   
 	//visual_groups.init(labelg);
 	//visual_groups.cushion_shading_thickness = cushion_shading_thickness;
 
@@ -492,7 +500,7 @@ Display::Display(int glutWin_,
 
 	//////////computeBundles();
 	/////generateTexture();
-    cout << "\n. then..." << endl; 
+   
 /*
 glEnable(GL_TEXTURE_2D);
 	typedef unsigned char BYTE;
@@ -892,7 +900,7 @@ void Display::computeGroupMeshes(Grouping* g)
 
 void Display::drawMap()											//Display one of the various dense maps:
 {
-	printf("\nGrouping* PointCloud::groupByLabel()\n",show_maptype);
+	cout<<"\n"<<"----------------"<<__PRETTY_FUNCTION__<<endl;
 	switch (6)  
 	//error here type=7 that I cancelled. becasue it's a global parameter so I changed it in
 	//error several places, that might have a position I didn't change back！！！ and there is no 
@@ -1055,6 +1063,8 @@ void Display::drawGroupMeshes()
 
 void Display::displayCb()
 {
+	// 这部分在Display的最后才加载!!!!!
+	cout<<"\n"<<"------------"<<__PRETTY_FUNCTION__<<endl;
     glClearColor(1,1,1,1);											//Reset main GL state to defaults
     glClear(GL_COLOR_BUFFER_BIT);
     glDisable(GL_LIGHTING);

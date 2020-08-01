@@ -47,22 +47,22 @@ bool  compute_rankings_offline = false;
 
 int main(int argc,char **argv)
 {
-	printf("\n-int main(int argc,char **argv)\n");
+	cout<<"\n"<<"----"<<__PRETTY_FUNCTION__<<endl;
     //1. Load parameters from command line
     loadParameters(argc, argv);
-	printf("\n-main, after loadParameters. pointfile = %s\n",pointfile);
+	printf("\n----after loadParameters. pointfile = %s\n",pointfile);
 
 
     //Let CUDA communicate with OpenGL
 
     colorMap.load(current_cmap);
- 	printf("\n-main, test colorMap.load, get(1) = (%f,%f,%f)\n",colorMap.getColor(1).r,colorMap.getColor(1).g,colorMap.getColor(1).b);
+ 	printf("\n----test colorMap.load, get(1) = (%f,%f,%f)\n",colorMap.getColor(1).r,colorMap.getColor(1).g,colorMap.getColor(1).b);
 
 
 
     //Initialize CUDA DT/FT API
     skelft2DInitialization(fboSize);									
-	printf("\n-main, not concerned about skelft2DInitialization()\n");
+	printf("\n----not concerned about skelft2DInitialization()\n");
 
 
 
@@ -76,7 +76,7 @@ int main(int argc,char **argv)
     //3. Point cloud
     PointCloud*	fullCloud = loadPointCloud();
 
-	printf("\n-main, after load, X[%f,%f], Y[%f,%f]\n",fullCloud->min_p.x,fullCloud->min_p.y,fullCloud->max_p.x,fullCloud->max_p.y);
+	printf("\n----after load, X[%f,%f], Y[%f,%f]\n",fullCloud->min_p.x,fullCloud->min_p.y,fullCloud->max_p.x,fullCloud->max_p.y);
     
 
 
@@ -86,7 +86,7 @@ int main(int argc,char **argv)
     ////} 
     ////else
       fullCloud->myFitToSize();
-	  printf("\n-main, after fitsize, X[%f,%f], Y[%f,%f]\n",fullCloud->min_p.x,fullCloud->min_p.y,fullCloud->max_p.x,fullCloud->max_p.y);
+	  printf("\n----after fitsize, X[%f,%f], Y[%f,%f]\n",fullCloud->min_p.x,fullCloud->min_p.y,fullCloud->max_p.x,fullCloud->max_p.y);
     
           
     //Finalize point cloud creation, once all points are added
@@ -116,7 +116,7 @@ int main(int argc,char **argv)
 //    subCloud1->initEnd();
 //    		
     
-    printf("\n-main, initEnd finished\n");
+    
     //Initialize visualization engine
     Display* dpy = new Display(1,fboSize, fullCloud, argc, argv);
     dpy->selected_point_id = selected_point_id;
@@ -133,9 +133,9 @@ int main(int argc,char **argv)
     return 0;
 }
 
-
+ 
 PointCloud* loadPointCloud() {
-	printf("\n----PointCloud* loadPointCloud() \n");
+	cout<<"\n"<<"--------"<<__PRETTY_FUNCTION__<<endl;
     PointCloud *cloud = new PointCloud(fboSize);					
 
 	//////////////appear errors alloc
@@ -143,7 +143,7 @@ PointCloud* loadPointCloud() {
     //Read data from file:
     if (pointfile)
     {
-        cout << "\n    loadPointCloud, Reading PEx file (loadPointCloud)..." << endl;
+        cout << "\n--------loadPointCloud, Reading PEx file (loadPointCloud)..." << endl;
         bool ok = false;
         if (load_trails) { ////////////默认false
             char newPointFileName[100];
@@ -154,10 +154,10 @@ PointCloud* loadPointCloud() {
             ok = cloud->myLoadPex(pointfile, projname, load_nd);
         if (!ok)
         {
-            cout<<"\n    Error: Cannot read given pointcloud data, aborting"<<endl;
+            cout<<"\n--------Error: Cannot read given pointcloud data, aborting"<<endl;
             exit(1);
         }
-        cout << "\n    loadPointCloud, Finished reading PEx file." << endl;
+        cout << "\n--------loadPointCloud, Finished reading PEx file." << endl;
     }
     //Generate synthetic data:
     else
@@ -174,7 +174,7 @@ PointCloud* loadPointCloud() {
 }
 
 void loadParameters(int argc, char **argv) {
-	printf("\n----void loadParameters(int argc, char **argv)\n");
+	cout<<"\n"<<"--------"<<__PRETTY_FUNCTION__<<endl;
     for (int ar=1;ar<argc;++ar)
     {
         string opt = argv[ar];
@@ -218,101 +218,7 @@ void loadParameters(int argc, char **argv) {
 
 
 
-
-
-int main1(int argc,char **argv)
-{
-	/*
-	int   NP		= 10;											//#particles to use (default)
-	char* pointfile = 0;
-	char* projname  = 0;
-	int	  fboSize   = 1024; /////////chushi size
-	bool  load_nd   = false;
-
-	for (int ar=1;ar<argc;++ar)
-	{
-		string opt = argv[ar];
-		if (opt=="-n")
-		{
-			++ar;
-			NP = atoi(argv[ar]);
-		}
-		else if (opt=="-f")
-		{
-			++ar;
-			pointfile = argv[ar];
-			if (ar+1<argc && argv[ar+1][0]!='-')
-			{
-			   ++ar;
-			   projname = argv[ar];
-			}
-		}
-		else if (opt=="-i")
-		{
-			++ar;
-			fboSize = atoi(argv[ar]);
-		}
-		else if (opt=="-d")
-		{
-			load_nd = true;
-		}
-	}
-
-	glutInitWindowSize(fboSize, fboSize);								//Graphics system initialization: This must occur in a very specific order!
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_ALPHA);
-	glutInit(&argc, argv);															//  1. first initialize GLUT
-  int mainWin = glutCreateWindow("Graph bundling");	  //  2. then create one main window, which initializes OpenGL
-	glewInit();                                         //  3. then initialize GLEW
-
-  skelft2DInitialization(fboSize);									  //Initialize CUDA DT/FT API
-
-
-
-	PointCloud*		cloud = new PointCloud(fboSize);			//2. Point cloud
-
-	if (pointfile)														//Read data from file:
-	{
-	   bool ok = cloud->loadPex(pointfile,projname,load_nd);
-	   if (!ok)
-	   {
-		  cout<<"Cannot read given data, aborting"<<endl;
-		  return 1;
-	   }
-	}
-	else																//Generate synthetic data:
-	{
-	   if (NP>0)
-		  initPointCloud(cloud,fboSize,NP);								//Initialize with random point distribution
-	   else
-	    testPointCloud(cloud,fboSize);								//Create simple point-cloud with 3 points (for testing)
-	}
-
-	cloud->initEnd();													//Finalize point cloud creation, once all points are added
-
-	RadialGrouping* rg = new RadialGrouping(cloud);						//Remove trivial exact-overlaps of points (since they create stupid visualization problems)
-	RadialGrouping* crs = rg->coarsen(0);								//From now on, use only the cleaned-up points
-	PointCloud* clean_cloud = crs->cloud;								//
-
-
-	RadialGrouping* vg = new RadialGrouping(clean_cloud);				//Make an engine to coarsen the cloud; We'll use it further for simplified visualizations.
-	//StronglyConnectedGrouping* vg = new StronglyConnectedGrouping(clean_cloud);
-	//vg->build();
-	visual_clustering = vg;
-
-	labelg = clean_cloud->groupByLabel();
-
-  Display* dpy = new Display(mainWin,fboSize,clean_cloud,argc,argv);			//Initialize visualization engine
-  glutMainLoop();
-
-  skelft2DDeinitialization();
-	delete vg;
-	delete labelg;
-	delete rg;
-	delete dpy;
-	delete cloud;
-    return 0;*/
-}
-
+ 
 
 
 void testPointCloud(PointCloud* cloud,int size)
