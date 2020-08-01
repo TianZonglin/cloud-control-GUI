@@ -87,7 +87,7 @@ int main(int argc,char **argv)
     ////else
       fullCloud->myFitToSize();
 	  printf("\n----after fitsize, X[%f,%f], Y[%f,%f]\n",fullCloud->min_p.x,fullCloud->min_p.y,fullCloud->max_p.x,fullCloud->max_p.y);
-    
+     
           
     //Finalize point cloud creation, once all points are added
     fullCloud->initEnd();															

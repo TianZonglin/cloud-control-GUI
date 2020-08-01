@@ -1617,7 +1617,7 @@ void PointCloud::myReduceAttributes(int toDimensionality) {
         attributes_variance[i] = variance(v);    
     }    
 }
-
+ 
 
 
 void PointCloud::computeTopDims() {

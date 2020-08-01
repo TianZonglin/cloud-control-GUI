@@ -32,7 +32,7 @@ void Colormap::load(int mapCode) {
         return;
     }
         
-    
+      
     colorTable.clear();
     std::string filename = "colormaps/";
     filename += CMAPFILES[mapCode];

@@ -100,7 +100,7 @@ cout<<"\n"<<"----------------"<<__PRETTY_FUNCTION__<<endl;
     invert_colormap = invert_colormapBak;    
 }
 
-
+ 
 
 
 float* ExplanatoryMap::buildWithoutShepard(Scalar &dimensions, Scalar &contributions) {

@@ -439,7 +439,7 @@ Display::Display(int glutWin_,
 	tex_density = texture[10];
 	tex_framebuffer_rgba = texture[11];
 	tex_dimranking = texture[12];
-
+ 
 	GLuint framebuffers[2];
 	glGenFramebuffers(2,framebuffers);			//Make two offscreen framebuffers: high-res luminance one (for accurate splatting) and low-res RGBA one (for all other ops)
 	framebuffer_lum  = framebuffers[0];

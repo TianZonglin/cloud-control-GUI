@@ -35,7 +35,7 @@ void FullMatrix::normalize()
 	m_min=0; m_max = 1;
 }
 
-
+ 
 void FullMatrix::print(){
 	for(int i=0,N=m.size();i<N;++i)
 	{
